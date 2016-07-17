@@ -96,16 +96,16 @@
             if(!value) {  value = value_last; };
             switch(value) {
                 case 'temperature':
-                    $.getJSON('sql.php?dev=28_00000448abc3&data=all', function (data){ render(data,' °C','Температура'); });
+                    $.getJSON('server.php?dev=28_00000448abc3', function (data){ render(data,' °C','Температура'); });
                     break;
                 case 'humidity':
-                    $.getJSON('sql.php?dev=35_000002793ac7&data=all', function (data) { render(data,' %','Влажность'); });
+                    $.getJSON('server.php?dev=35_000002793ac7', function (data) { render(data,' %','Влажность'); });
                     break;
                 case 'pressure':
-                    $.getJSON('sql.php?dev=81_000000000001&data=all', function (data) { render(data,' mmHg','Давление'); });
+                    $.getJSON('server.php?dev=81_000000000001', function (data) { render(data,' mmHg','Давление'); });
                     break;
                 case 'wind_speed':
-                    $.getJSON('sql.php?dev=28_0a020b08010d&data=all', function (data) { render(data,' m/s','Скорость ветра'); });
+                    $.getJSON('server.php?dev=28_0a020b08010d', function (data) { render(data,' m/s','Скорость ветра'); });
                     break;
                 }
         };
@@ -570,10 +570,10 @@
         var g2_p = g2.series[0].points[0], pressure;
         var g1_p = g1.series[0].points[0], humidity;
         var g0_p = g0.series[0].points[0], temperature;
-        g3_p.update(parseFloat(wind_speed));
-        g2_p.update(parseFloat(pressure));
-        g1_p.update(parseFloat(humidity));
-        g0_p.update(parseFloat(temperature));
+        g3_p.update(wind_speed);
+        g2_p.update(pressure);
+        g1_p.update(humidity);
+        g0_p.update(temperature);
         $('#relevance').html('Актуальность данных: ' + data.relevance);
         }
      });
