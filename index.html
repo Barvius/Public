@@ -12,20 +12,17 @@
     <script src="js/exporting.js"></script>
     <script src="js/highcharts-more.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css" >
+    <link rel="stylesheet" href="css/vk-theme.css" >
 </head>
     <body role="document">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" style="color:white;" >Погода в Старомихайловке</a>
+          <a class="navbar-brand" href="">Погода в Старомихайловке</a>
         </div>
-            <ul class="nav navbar-nav">
-            <li><a href="#" data-toggle="modal" data-target="#log">Старомихайловка. Это где?</a></li>
-            </ul>
       </div>
     </nav>
-
-    <div class="container theme-showcase text-center" role="main">
+    <div class="container theme-showcase text-center" role="main" style="padding:0;">
         <div id="row">
              <div class="col-sm-3">
             <div id="thermometr" class="gauge"></div>
@@ -40,41 +37,24 @@
             <div id="wind" class="gauge"></div>
             </div>
         </div>
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#" data-toggle="tab" onclick="chart_type('temperature');">Температура</a></li>
-                <li><a href="#" data-toggle="tab" onclick="chart_type('humidity');">Влажность</a></li>
-                <li><a href="#" data-toggle="tab" onclick="chart_type('pressure');">Давление</a></li>
-                <li><a href="#" data-toggle="tab" onclick="chart_type('wind_speed');">Скорость ветра</a></li>
-                <li class="disabled"><a id="relevance"></a></li>
-            </ul>
-        <div id="chart" style="position: relative;"></div>
-        <div class="modal fade starter-template" id="log" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                <div class="modal-body">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d42716.57854667608!2d37.54663676971183!3d47.99851962829227!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40e099302dbd57f7%3A0xb27ea5df7a92fd14!2z0KHRgtCw0YDQvtC80LjRhdCw0LnQu9C-0LLQutCwLCDQlNC-0L3QtdGG0LrQsNGPINC-0LHQu9Cw0YHRgtGM!5e0!3m2!1sru!2sua!4v1467899649109" width="800" height="600" frameborder="0" style="border:0" allowfullscreen></iframe>
-                </div>
-                </div>
-            </div>
-        </div>
     </div>
-
-<style>
-    col-sm-3{
-        padding-left: 0px;
-    padding-right: 0px;
-    }
-    .gauge{
-        height: 300px;
-    }
-    body {
-        padding-top: 70px;
-    }
-</style>
+    <div class="container theme-showcase text-center" role="main">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#" data-toggle="tab" onclick="chart_type('temperature');">Температура</a></li>
+        <li><a href="#" data-toggle="tab" onclick="chart_type('humidity');">Влажность</a></li>
+        <li><a href="#" data-toggle="tab" onclick="chart_type('pressure');">Давление</a></li>
+        <li><a href="#" data-toggle="tab" onclick="chart_type('wind_speed');">Скорость ветра</a></li>
+      </ul>
+      <div id="chart" style="position: relative;"></div>
+    </div>
 <script>
     var value_last;
-    var windowH = $(window).height()-50;
-    $('#chart').height((windowH-370));
+    var windowH = $(window).height()-90;
+    if ($(window).height() < 720) {
+      $('#chart').height(400);
+    } else {
+      $('#chart').height((windowH-370));
+    }
     Highcharts.setOptions({
             lang: {
                 months:[ "Января" , "Февраля" , "Мара" , "Апреля" , "Мая" , "Июня" , "Июля" , "Августа" , "Сентября" , "Октября" , "Ноября" , "Декабря"],
@@ -82,8 +62,15 @@
                 weekdays: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
                 shortWeekdays: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
                 rangeSelectorZoom: "Период"
-            }
+            },
+            chart: {
+      backgroundColor: null,
+      style: {
+         fontFamily: "Dosis, sans-serif"
+      }
+    }
     });
+
     loader();
     init();
     chart_type('temperature');
@@ -112,9 +99,35 @@
         function render(data,valueSuffix,name){
             $('#chart').highcharts('StockChart', {
                 rangeSelector: {
-                    inputEnabled: false,
-                    selected: 1,
-                    buttons: [{
+                inputEnabled: false,
+                  buttonTheme: {
+                  fill: 'none',
+                  stroke: 'none',
+                  'stroke-width': 0,
+                  r: 2,
+                    style: {
+                      color: '#507299',
+                      fontWeight: 'bold'
+                    },
+                    states: {
+                      hover: {
+                        fill: '#e1e7ed'
+                      },
+                      select: {
+                        fill: '#507299',
+                          style: {
+                            color: 'white'
+                          }
+                      }
+                    }
+                },
+
+                labelStyle: {
+                      color: 'silver',
+                      fontWeight: 'bold'
+                },
+                selected: 1,
+                buttons: [{
                         type: 'minute',
                         count: 360,
                         text: '6Ч'
@@ -155,10 +168,25 @@
                 credits: {
                     enabled: false
                 },
+                scrollbar: {
+                enabled : false
+                },
+                navigator: {
+                  handles: {
+                    backgroundColor: 'none',
+                    borderColor: 'none'
+                }
+                },
+                resetZoomButton: {
+                    theme: {
+                        display: 'none'
+                    }
+                },
                 series : [{
                     type: 'spline',
                     name : name,
                     data : data,
+                    color: '#36638E',
                     tooltip: {
                         valueDecimals: 1
                     }
@@ -574,11 +602,9 @@
         g2_p.update(pressure);
         g1_p.update(humidity);
         g0_p.update(temperature);
-        $('#relevance').html('Актуальность данных: ' + data.relevance);
         }
      });
    };
 </script>
-
 </body>
 </html>

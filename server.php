@@ -17,10 +17,10 @@ if (isset($_GET['act'])){
         // выборка последних значений с БД;
         $results = $db->query('select * from data_'.$sens_list['id'][$i].' where id=(select max(id) from data_'.$sens_list['id'][$i].');');
         while($rr = $results->fetchArray(SQLITE3_ASSOC)) {
-            $rezult[$i] = $rr['data'];
+            $rezult[$i] = round($rr['data'],1);
         }
       }
-      $data = array('code' => '200','relevance' => exec('cat /home/myhome/relevance'), 'data' => array('temperature' => $rezult[0], 'humidity' => $rezult[2], 'pressure' => $rezult[3], 'wind_speed' =>$rezult[1] ));
+      $data = array('code' => '200', 'data' => array('temperature' => $rezult[0], 'humidity' => $rezult[2], 'pressure' => $rezult[3], 'wind_speed' =>$rezult[1] ));
     }
 }
 if (isset($_GET['dev'])){
@@ -28,7 +28,7 @@ if (isset($_GET['dev'])){
   // проверка на валидность id;
     $results = $db->query('SELECT * FROM data_'.$_GET['dev'].' order by id;');
     while($rr = $results->fetchArray(SQLITE3_ASSOC)) {
-        $data[] = array( ($rr['date']+10800)*1000, $rr['data']);
+        $data[] = array( ($rr['date']+10800)*1000, round($rr['data'],1));
         //10800 - корректировка часового пояса на MSK;
     }
   }
